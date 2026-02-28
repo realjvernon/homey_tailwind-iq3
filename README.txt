@@ -1,0 +1,3 @@
+Control your Tailwind iQ3 garage door opener directly over your local network. Open, close, and monitor the status of every door connected to your Tailwind controller, all without relying on cloud services.
+
+The app automatically discovers Tailwind controllers on your network and creates a separate device for each garage door. Just enter your 6-digit Local Control Key from the Tailwind dashboard and you're ready to go. Pair it with Homey flows to automate your garage based on time, location, or any other trigger.

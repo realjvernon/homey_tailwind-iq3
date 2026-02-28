@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- WiFi/garage symbol from Tailwind logo — white on transparent -->
+  <g fill="none" stroke="#fff" stroke-linecap="round">
+    <!-- Outer arc -->
+    <path d="M108 230 A 200 200 0 0 1 404 230" stroke-width="32"/>
+    <!-- Middle arc -->
+    <path d="M152 262 A 145 145 0 0 1 360 262" stroke-width="30"/>
+    <!-- Inner arc -->
+    <path d="M194 290 A 92 92 0 0 1 318 290" stroke-width="28"/>
+  </g>
+  <!-- Garage door base -->
+  <rect x="216" y="330" width="80" height="68" rx="6" fill="#fff"/>
+  <!-- Garage door panel lines -->
+  <line x1="222" y1="350" x2="290" y2="350" stroke="#2574B5" stroke-width="4"/>
+  <line x1="222" y1="368" x2="290" y2="368" stroke="#2574B5" stroke-width="4"/>
+  <line x1="222" y1="386" x2="290" y2="386" stroke="#2574B5" stroke-width="4"/>
+</svg>
