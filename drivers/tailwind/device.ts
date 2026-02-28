@@ -111,8 +111,8 @@ export default class TailwindDevice extends Homey.Device {
 
   private async registerNotifications(): Promise<void> {
     if (!this.client) return;
-    const localUrl = await this.homey.api.getLocalUrl();
-    const callbackUrl = `${localUrl}/api/app/com.dn.tailwind/notification?host=${encodeURIComponent(this.controllerHost)}`;
+    const localAddress = await this.homey.cloud.getLocalAddress();
+    const callbackUrl = `http://${localAddress}/api/app/com.dn.tailwind/notification?host=${encodeURIComponent(this.controllerHost)}`;
     await this.client.registerNotifyUrl(this.controllerHost, callbackUrl);
     this.log(`Registered notify_url: ${callbackUrl}`);
   }

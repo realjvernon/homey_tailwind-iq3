@@ -71,7 +71,7 @@ describe('TailwindDevice', () => {
       removeListener: jest.fn().mockImplementation((e: string, fn: (...args: any[]) => void) => {
         homeyEmitter.removeListener(e, fn);
       }),
-      api: { getLocalUrl: jest.fn().mockResolvedValue('http://192.168.1.50') },
+      cloud: { getLocalAddress: jest.fn().mockResolvedValue('192.168.1.50') },
       flow: {
         getDeviceTriggerCard: jest.fn().mockImplementation((id: string) => {
           const cards: Record<string, { trigger: jest.Mock }> = {
