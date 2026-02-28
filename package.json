@@ -1,6 +1,6 @@
 {
   "name": "com.dn.tailwind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tailwind garage door controller integration",
   "main": "app.js",
   "scripts": {
@@ -23,9 +23,9 @@
     ]
   },
   "devDependencies": {
-    "@stryker-mutator/core": "^9.5.1",
-    "@stryker-mutator/jest-runner": "^9.5.1",
-    "@stryker-mutator/typescript-checker": "^9.5.1",
+    "@stryker-mutator/core": "^9.6.0",
+    "@stryker-mutator/jest-runner": "^9.6.0",
+    "@stryker-mutator/typescript-checker": "^9.6.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/homey": "npm:homey-apps-sdk-v3-types@0.3.10",
     "@types/jest": "29.5.14",

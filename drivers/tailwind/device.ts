@@ -167,6 +167,9 @@ export default class TailwindDevice extends Homey.Device {
     await this.client.controlDoor(this.controllerHost, this.doorIndex, cmd);
   }
 
+  private static readonly VALID_HOST_RE = /^[a-zA-Z0-9._-]+$/;
+  private static readonly VALID_KEY_RE = /^\d{6}$/;
+
   async onSettings({
     newSettings,
     changedKeys,
@@ -181,6 +184,18 @@ export default class TailwindDevice extends Homey.Device {
     const newKey = changedKeys.includes('localKey')
       ? (newSettings.localKey as string)
       : this.localKey;
+
+    if (changedKeys.includes('controllerHost')) {
+      if (!newHost || newHost.length > 253 || !TailwindDevice.VALID_HOST_RE.test(newHost)) {
+        throw new Error('Invalid controller host');
+      }
+    }
+
+    if (changedKeys.includes('localKey')) {
+      if (!TailwindDevice.VALID_KEY_RE.test(newKey)) {
+        throw new Error('Invalid local key: must be exactly 6 digits');
+      }
+    }
 
     // Create test client with potentially new key
     const testClient = changedKeys.includes('localKey') ? new TailwindClient(newKey) : this.client;

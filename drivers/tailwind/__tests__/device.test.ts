@@ -383,6 +383,96 @@ describe('TailwindDevice', () => {
       expect(TailwindClient).toHaveBeenCalledTimes(initialCallCount);
     });
 
+    it('should reject empty controllerHost', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { controllerHost: '' },
+          changedKeys: ['controllerHost'],
+        }),
+      ).rejects.toThrow('Invalid controller host');
+    });
+
+    it('should reject controllerHost with spaces', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { controllerHost: 'host name' },
+          changedKeys: ['controllerHost'],
+        }),
+      ).rejects.toThrow('Invalid controller host');
+    });
+
+    it('should reject controllerHost longer than 253 characters', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { controllerHost: 'a'.repeat(254) },
+          changedKeys: ['controllerHost'],
+        }),
+      ).rejects.toThrow('Invalid controller host');
+    });
+
+    it('should reject localKey that is not 6 digits', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { localKey: '12345' },
+          changedKeys: ['localKey'],
+        }),
+      ).rejects.toThrow('Invalid local key: must be exactly 6 digits');
+    });
+
+    it('should reject localKey with non-numeric characters', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { localKey: 'abcdef' },
+          changedKeys: ['localKey'],
+        }),
+      ).rejects.toThrow('Invalid local key: must be exactly 6 digits');
+    });
+
+    it('should reject localKey that is too long', async () => {
+      await expect(
+        device.onSettings({
+          oldSettings: {},
+          newSettings: { localKey: '1234567' },
+          changedKeys: ['localKey'],
+        }),
+      ).rejects.toThrow('Invalid local key: must be exactly 6 digits');
+    });
+
+    it('should accept valid IPv4 address as controllerHost', async () => {
+      await device.onSettings({
+        oldSettings: {},
+        newSettings: { controllerHost: '192.168.1.100' },
+        changedKeys: ['controllerHost'],
+      });
+
+      expect(mockGetDeviceStatus).toHaveBeenCalledWith('192.168.1.100');
+    });
+
+    it('should accept valid hostname as controllerHost', async () => {
+      await device.onSettings({
+        oldSettings: {},
+        newSettings: { controllerHost: 'tailwind-abc.local' },
+        changedKeys: ['controllerHost'],
+      });
+
+      expect(mockGetDeviceStatus).toHaveBeenCalledWith('tailwind-abc.local');
+    });
+
+    it('should accept valid 6-digit localKey', async () => {
+      await device.onSettings({
+        oldSettings: {},
+        newSettings: { localKey: '000000' },
+        changedKeys: ['localKey'],
+      });
+
+      expect(TailwindClient).toHaveBeenCalledWith('000000');
+    });
+
     it('should validate connection with new host before applying changes', async () => {
       await device.onSettings({
         oldSettings: {},
