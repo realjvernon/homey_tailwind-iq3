@@ -1,16 +1,20 @@
 {
   "id": "com.dn.tailwind",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": ">=5.0.0",
   "sdk": 3,
-  "platforms": ["local"],
+  "platforms": [
+    "local"
+  ],
   "name": {
     "en": "Tailwind"
   },
   "description": {
     "en": "Unofficial local control for your Tailwind iQ3 garage door opener — no cloud required"
   },
-  "category": ["security"],
+  "category": [
+    "security"
+  ],
   "permissions": [],
   "api": {
     "receiveNotification": {
@@ -43,7 +47,13 @@
       "id": "{{name}}",
       "conditions": [
         [
-          { "field": "txt.vendor", "match": { "type": "string", "value": "tailwind" } }
+          {
+            "field": "txt.vendor",
+            "match": {
+              "type": "string",
+              "value": "tailwind"
+            }
+          }
         ]
       ]
     }
@@ -52,8 +62,12 @@
     "triggers": [
       {
         "id": "garage_door_opened",
-        "title": { "en": "Garage door opened" },
-        "hint": { "en": "When the garage door is opened" },
+        "title": {
+          "en": "Garage door opened"
+        },
+        "hint": {
+          "en": "When the garage door is opened"
+        },
         "args": [
           {
             "name": "device",
@@ -64,8 +78,12 @@
       },
       {
         "id": "garage_door_closed",
-        "title": { "en": "Garage door closed" },
-        "hint": { "en": "When the garage door is closed" },
+        "title": {
+          "en": "Garage door closed"
+        },
+        "hint": {
+          "en": "When the garage door is closed"
+        },
         "args": [
           {
             "name": "device",
@@ -76,8 +94,12 @@
       },
       {
         "id": "garage_door_locked",
-        "title": { "en": "Garage door locked" },
-        "hint": { "en": "When the garage door is locked" },
+        "title": {
+          "en": "Garage door locked"
+        },
+        "hint": {
+          "en": "When the garage door is locked"
+        },
         "args": [
           {
             "name": "device",
@@ -88,8 +110,12 @@
       },
       {
         "id": "controller_rebooted",
-        "title": { "en": "Controller rebooted" },
-        "hint": { "en": "When the Tailwind controller reboots" },
+        "title": {
+          "en": "Controller rebooted"
+        },
+        "hint": {
+          "en": "When the Tailwind controller reboots"
+        },
         "args": [
           {
             "name": "device",
@@ -102,8 +128,12 @@
     "conditions": [
       {
         "id": "garage_door_is_open",
-        "title": { "en": "The garage door is !{{open|closed}}" },
-        "hint": { "en": "Check if the garage door is open or closed" },
+        "title": {
+          "en": "The garage door is !{{open|closed}}"
+        },
+        "hint": {
+          "en": "Check if the garage door is open or closed"
+        },
         "args": [
           {
             "name": "device",
@@ -116,8 +146,12 @@
     "actions": [
       {
         "id": "open_garage_door",
-        "title": { "en": "Open the garage door" },
-        "hint": { "en": "Open the garage door" },
+        "title": {
+          "en": "Open the garage door"
+        },
+        "hint": {
+          "en": "Open the garage door"
+        },
         "args": [
           {
             "name": "device",
@@ -128,8 +162,12 @@
       },
       {
         "id": "close_garage_door",
-        "title": { "en": "Close the garage door" },
-        "hint": { "en": "Close the garage door" },
+        "title": {
+          "en": "Close the garage door"
+        },
+        "hint": {
+          "en": "Close the garage door"
+        },
         "args": [
           {
             "name": "device",
@@ -146,9 +184,15 @@
         "en": "Tailwind Garage Door"
       },
       "class": "garagedoor",
-      "capabilities": ["garagedoor_closed"],
-      "platforms": ["local"],
-      "connectivity": ["lan"],
+      "capabilities": [
+        "garagedoor_closed"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
       "discovery": "tailwind",
       "images": {
         "small": "/drivers/tailwind/assets/images/small.png",
@@ -158,21 +202,31 @@
       "settings": [
         {
           "type": "group",
-          "label": { "en": "Connection" },
+          "label": {
+            "en": "Connection"
+          },
           "children": [
             {
               "id": "controllerHost",
               "type": "text",
-              "label": { "en": "Controller Host" },
+              "label": {
+                "en": "Controller Host"
+              },
               "value": "",
-              "hint": { "en": "Hostname or IP address of the Tailwind controller (auto-detected during pairing)" }
+              "hint": {
+                "en": "Hostname or IP address of the Tailwind controller (auto-detected during pairing)"
+              }
             },
             {
               "id": "localKey",
               "type": "password",
-              "label": { "en": "Local Control Key" },
+              "label": {
+                "en": "Local Control Key"
+              },
               "value": "",
-              "hint": { "en": "6-digit key from gotailwind.com/local-control-key" }
+              "hint": {
+                "en": "6-digit key from gotailwind.com/local-control-key"
+              }
             }
           ]
         }
