@@ -11,7 +11,7 @@
     "en": "Unofficial local control for your Tailwind iQ3 garage door opener — no cloud required"
   },
   "category": ["security"],
-  "permissions": ["homey:manager:api"],
+  "permissions": [],
   "api": {
     "receiveNotification": {
       "method": "POST",
