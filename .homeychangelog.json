@@ -4,5 +4,8 @@
   },
   "1.0.1": {
     "en": "Fix dependency vulnerabilities, add settings input validation, update app metadata"
+  },
+  "1.0.2": {
+    "en": "Switch to homey.cloud.getLocalAddress for notification callbacks"
   }
 }
