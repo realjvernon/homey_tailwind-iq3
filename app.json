@@ -1,6 +1,6 @@
 {
   "id": "com.dn.tailwind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": ["local"],
@@ -8,7 +8,7 @@
     "en": "Tailwind"
   },
   "description": {
-    "en": "Local control for your Tailwind iQ3 garage door opener — no cloud required"
+    "en": "Unofficial local control for your Tailwind iQ3 garage door opener — no cloud required"
   },
   "category": ["security"],
   "permissions": ["homey:manager:api"],
@@ -29,15 +29,9 @@
     "xlarge": "/assets/images/xlarge.png"
   },
   "author": {
-    "name": "DN",
-    "email": "support@dn.com"
+    "name": "John Vernon"
   },
-  "support": "mailto:support@dn.com",
-  "homepage": "https://dn.com",
-  "bugs": {
-    "url": "https://github.com/dn/com.dn.tailwind/issues"
-  },
-  "source": "https://github.com/dn/com.dn.tailwind",
+  "support": "https://github.com/realjvernon/homey_tailwind-iq3",
   "brandColor": "#2574B5",
   "discovery": {
     "tailwind": {

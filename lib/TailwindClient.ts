@@ -133,9 +133,10 @@ export class TailwindClient {
     return this.makeRequest(host, command) as Promise<TailwindCommandResponse>;
   }
 
-  /**
-   * Send HTTP request to the Tailwind device with retry logic
-   */
+  // Security note: HTTP is used because the Tailwind iQ3 firmware only exposes
+  // an HTTP API (mDNS service type _http._tcp). There is no HTTPS endpoint.
+  // The TOKEN header (Local Control Key) is sent in plaintext over LAN.
+  // This is acceptable given the LAN-only threat model.
   private async makeRequest(
     host: string,
     command: TailwindCommand,

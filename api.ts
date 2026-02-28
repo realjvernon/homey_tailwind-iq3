@@ -15,6 +15,10 @@ interface LogHandlerArgs {
   homey: any;
 }
 
+// Security note: This endpoint is public because the Tailwind controller
+// pushes notifications via HTTP POST and cannot authenticate with Homey.
+// The LAN-only threat model accepts that any device on the local network
+// can POST to this endpoint.
 export async function receiveNotification({
   homey,
   body,
