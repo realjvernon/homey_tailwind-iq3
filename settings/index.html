@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Tailwind Settings</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 16px; color: #333; }
+        h2 { margin-top: 24px; font-size: 18px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #e0e0e0; font-size: 13px; }
+        th { font-weight: 600; color: #666; }
+        .empty-state { color: #999; font-style: italic; padding: 12px 0; }
+        .info { margin-top: 24px; color: #666; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <h2>Notification Log</h2>
+    <div id="log-container">
+        <p class="empty-state">Loading...</p>
+    </div>
+
+    <p class="info">Device settings (host address and Local Control Key) can be changed from each device's settings page in the Homey app.</p>
+
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+    <script type="text/javascript">
+        function onHomeyReady(Homey) {
+            Homey.ready();
+            fetchLog(Homey);
+            setInterval(function() { fetchLog(Homey); }, 5000);
+        }
+
+        function fetchLog(Homey) {
+            Homey.api('GET', '/notification-log', function(err, log) {
+                var container = document.getElementById('log-container');
+                if (err || !log || log.length === 0) {
+                    container.innerHTML = '<p class="empty-state">No notifications received yet.</p>';
+                    return;
+                }
+                var rows = log.slice().reverse().map(function(entry) {
+                    var p = entry.payload;
+                    var time = new Date(entry.timestamp).toLocaleTimeString();
+                    var event = (p.notify && p.notify.event) || '—';
+                    var door = (p.notify && p.notify.door_idx !== undefined) ? 'Door ' + (p.notify.door_idx + 1) : '—';
+                    var devId = p.dev_id || '—';
+                    return '<tr><td>' + time + '</td><td>' + event + '</td><td>' + door + '</td><td>' + devId + '</td></tr>';
+                }).join('');
+                container.innerHTML = '<table><thead><tr><th>Time</th><th>Event</th><th>Door</th><th>Dev ID</th></tr></thead><tbody>' + rows + '</tbody></table>';
+            });
+        }
+    </script>
+</body>
+</html>

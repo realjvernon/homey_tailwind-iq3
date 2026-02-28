@@ -1,0 +1,294 @@
+<style>
+    .container {
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .phase {
+        display: none;
+    }
+    .phase.active {
+        display: block;
+    }
+
+    /* Phase 1: Scanning */
+    .scan-container {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    .scan-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e0e0e0;
+        border-top-color: #2574B5;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 20px;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    .scan-text {
+        color: #666;
+        font-size: 15px;
+    }
+
+    /* Controller cards */
+    .controllers-list-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+    .controller-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .controller-card:hover {
+        border-color: #aaa;
+        background: #fafafa;
+    }
+    .controller-card.selected {
+        border-color: #2574B5;
+        background: #f0f7ff;
+    }
+    .controller-name {
+        font-weight: 500;
+        color: #333;
+    }
+    .controller-ip {
+        font-size: 13px;
+        color: #888;
+        font-family: monospace;
+    }
+
+    /* No controllers */
+    .no-controllers-msg {
+        padding: 14px;
+        background: #fff8e1;
+        border-radius: 8px;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    /* Inputs */
+    .input-group {
+        margin: 16px 0;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+    }
+    .input-group input {
+        width: 100%;
+        padding: 11px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    .input-group input:focus {
+        border-color: #2574B5;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 116, 181, 0.1);
+    }
+    .retry-link {
+        display: inline-block;
+        margin-top: 12px;
+        color: #2574B5;
+        cursor: pointer;
+        font-size: 13px;
+    }
+    .retry-link:hover {
+        text-decoration: underline;
+    }
+    /* Help */
+    .help-text {
+        margin-top: 20px;
+        padding: 14px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        color: #666;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="container">
+    <!-- Phase 1: Scanning -->
+    <div id="phase-scanning" class="phase active">
+        <div class="scan-container">
+            <div class="scan-spinner"></div>
+            <div class="scan-text">Looking for Tailwind controllers...</div>
+        </div>
+    </div>
+
+    <!-- Phase 2: Controllers found -->
+    <div id="phase-found" class="phase">
+        <div class="controllers-list-label">Found on your network</div>
+        <div id="controller-cards"></div>
+
+        <div class="input-group">
+            <label for="key-input">Local Control Key</label>
+            <input type="password" id="key-input" placeholder="6-digit key from web.gotailwind.com" autocomplete="off" />
+        </div>
+
+        <div class="help-text">
+            <strong>Local Control Key:</strong><br>
+            1. Go to <a href="https://web.gotailwind.com" id="link-gotailwind" target="_blank" rel="noopener noreferrer">web.gotailwind.com</a>
+               <span id="copy-url" style="color:#2574B5;cursor:pointer;font-size:12px;margin-left:4px;">(copy link)</span><br>
+            2. Sign in and navigate to Local Control settings<br>
+            3. Copy the 6-digit key
+        </div>
+    </div>
+
+    <!-- Phase 3: No controllers found -->
+    <div id="phase-empty" class="phase">
+        <div class="no-controllers-msg">
+            No Tailwind controllers were found on your network. Make sure your Tailwind iQ3 is powered on and connected to the same network as your Homey.
+        </div>
+        <span class="retry-link" id="btn-retry">Try again</span>
+    </div>
+</div>
+
+<script>
+    Homey.setTitle('Add Tailwind Controller');
+
+    // State
+    var selectedHost = null;
+    var selectedDiscoveryId = null;
+
+    // Elements
+    var keyInput = document.getElementById('key-input');
+    var controllerCards = document.getElementById('controller-cards');
+
+    // Phase management
+    function showPhase(name) {
+        document.querySelectorAll('.phase').forEach(function(el) {
+            el.classList.remove('active');
+        });
+        document.getElementById('phase-' + name).classList.add('active');
+    }
+
+    // Save credentials to back-end whenever selection or key changes
+    function saveCredentials() {
+        var key = keyInput.value.trim();
+        if (selectedHost && key) {
+            Homey.emit('save_credentials', {
+                host: selectedHost,
+                localKey: key,
+                discoveryId: selectedDiscoveryId || undefined
+            });
+        }
+    }
+
+    function selectController(host, discoveryId) {
+        selectedHost = host;
+        selectedDiscoveryId = discoveryId;
+        document.querySelectorAll('.controller-card').forEach(function(c) {
+            c.classList.toggle('selected', c.dataset.host === host);
+        });
+        saveCredentials();
+    }
+
+    keyInput.addEventListener('input', saveCredentials);
+
+    // Discovery
+    function loadControllers() {
+        showPhase('scanning');
+        Homey.emit('discover_controllers')
+            .then(function(results) {
+                var controllers = results || [];
+
+                if (controllers.length === 0) {
+                    showPhase('empty');
+                    return;
+                }
+
+                // Clear and render cards
+                controllerCards.innerHTML = '';
+                controllers.forEach(function(ctrl) {
+                    var card = document.createElement('div');
+                    card.className = 'controller-card';
+                    card.dataset.host = ctrl.host;
+
+                    var nameEl = document.createElement('div');
+                    nameEl.className = 'controller-name';
+                    nameEl.textContent = ctrl.name;
+
+                    var hostEl = document.createElement('div');
+                    hostEl.className = 'controller-ip';
+                    hostEl.textContent = ctrl.host;
+
+                    card.appendChild(nameEl);
+                    card.appendChild(hostEl);
+                    card.addEventListener('click', function() {
+                        selectController(ctrl.host, ctrl.discoveryId);
+                    });
+                    controllerCards.appendChild(card);
+                });
+
+                // Auto-select if only one
+                if (controllers.length === 1) {
+                    selectController(controllers[0].host, controllers[0].discoveryId);
+                }
+
+                showPhase('found');
+            })
+            .catch(function() {
+                showPhase('empty');
+            });
+    }
+
+    // Retry button
+    document.getElementById('btn-retry').addEventListener('click', loadControllers);
+
+    // Force external browser for gotailwind link (avoids embedded webview on Android)
+    var gotailwindUrl = 'https://web.gotailwind.com';
+    document.getElementById('link-gotailwind').addEventListener('click', function(e) {
+        e.preventDefault();
+        // _system target is recognized by Cordova/webview bridges as "open in system browser"
+        window.open(gotailwindUrl, '_system');
+    });
+
+    // Copy URL fallback
+    document.getElementById('copy-url').addEventListener('click', function() {
+        var el = this;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(gotailwindUrl).then(function() {
+                el.textContent = '(copied!)';
+                setTimeout(function() { el.textContent = '(copy link)'; }, 2000);
+            });
+        } else {
+            // Fallback for older webviews
+            var ta = document.createElement('textarea');
+            ta.value = gotailwindUrl;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            el.textContent = '(copied!)';
+            setTimeout(function() { el.textContent = '(copy link)'; }, 2000);
+        }
+    });
+
+    // Start
+    loadControllers();
+</script>

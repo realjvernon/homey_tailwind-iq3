@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "connection_failed": "Connection failed"
+  },
+  "pair": {
+    "no_devices_found": "No Tailwind devices found. Please check that your controller is powered on and connected to the same network.",
+    "discovery_failed": "Device discovery failed: __error__"
+  }
+}

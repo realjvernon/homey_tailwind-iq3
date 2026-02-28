@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="960" viewBox="0 0 960 960" xmlns="http://www.w3.org/2000/svg">
+  <!-- Garage door — right-side angle, white on transparent -->
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Door frame -->
+    <rect x="200" y="180" width="560" height="620" rx="20" stroke-width="36"/>
+    <!-- Panel lines -->
+    <line x1="236" y1="335" x2="724" y2="335" stroke-width="28"/>
+    <line x1="236" y1="490" x2="724" y2="490" stroke-width="28"/>
+    <line x1="236" y1="645" x2="724" y2="645" stroke-width="28"/>
+    <!-- Handle -->
+    <circle cx="680" cy="568" r="24" fill="#fff"/>
+  </g>
+</svg>

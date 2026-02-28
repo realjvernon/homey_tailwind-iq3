@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "isolatedModules": true,
+    "outDir": "./.homeybuild",
+    "rootDir": ".",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "__mocks__", "**/__tests__", "scripts"]
+}
